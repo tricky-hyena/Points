@@ -75,9 +75,6 @@ namespace FormsApp
 						using (var w = new StreamWriter(fs))
 							w.Write(yaml);
 						break;
-					case ".formatik":
-						MyFormat.Serialize(fs, points);
-						break;
 				}
 			}
 		}
