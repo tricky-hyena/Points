@@ -9,6 +9,7 @@ using System.Runtime.Serialization.Formatters.Soap;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using YamlDotNet.Serialization;
+using SimpleObjectMapping;
 
 namespace FormsApp
 {
@@ -44,7 +45,7 @@ namespace FormsApp
 		private void btnSerialize_Click(object sender, EventArgs e)
 		{
 			var dlg = new SaveFileDialog();
-			dlg.Filter = "SOAP|*.soap|XML|*.xml|JSON|*.json|Binary|*.bin|YAML|*.yaml|My format|*.formatik";
+			dlg.Filter = "SOAP|*.soap|XML|*.xml|JSON|*.json|Binary|*.bin|YAML|*.yaml|SOM|*.som";
 
 			if (dlg.ShowDialog() != DialogResult.OK) return;
 
@@ -75,6 +76,11 @@ namespace FormsApp
 						using (var w = new StreamWriter(fs))
 							w.Write(yaml);
 						break;
+					case ".som":
+						var result = SimpleObjectMappingSerializer.Serialize(points);
+                        using (var w = new StreamWriter(fs))
+                            w.Write(result);
+                        break;
 				}
 			}
 		}
@@ -82,7 +88,7 @@ namespace FormsApp
 		private void btnDeserialize_Click(object sender, EventArgs e)
 		{
 			var dlg = new OpenFileDialog();
-			dlg.Filter = "SOAP|*.soap|XML|*.xml|JSON|*.json|Binary|*.bin|YAML|*.yaml";
+			dlg.Filter = "SOAP|*.soap|XML|*.xml|JSON|*.json|Binary|*.bin|YAML|*.yaml|SOM|*.som";
 
 			if (dlg.ShowDialog() != DialogResult.OK) return;
 
@@ -112,7 +118,19 @@ namespace FormsApp
 								).ToArray();
 						}
 						break;
-				}
+					case ".som":
+
+						var objs = SimpleObjectMappingSerializer.DeserializeArray(
+                            File.ReadAllText(dlg.FileName));
+						var pps = new List<Point>();
+						foreach (var obj in objs)
+						{
+							pps.Add((Point)obj);
+						}
+						points = pps.ToArray();
+
+                        break;
+                }
 			}
 			listBox.DataSource = null;
 			listBox.DataSource = points;

@@ -96,6 +96,10 @@
       <Project>{e549e17a-fe60-4dad-a083-c3fbb391f813}</Project>
       <Name>PointLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SimpleObjectMapping\SimpleObjectMapping.csproj">
+      <Project>{d7373292-6486-4f29-99f9-0d39b542e533}</Project>
+      <Name>SimpleObjectMapping</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
